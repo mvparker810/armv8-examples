@@ -284,8 +284,14 @@ def parse(lines)->None:
         line = line.strip()
         #convert multiple spaces into one space 
         line = re.sub('[ \t]+',' ',line) 
-        if('/*' in line and '*/' in line):continue
-        if('//' in line):continue
+        if('/*' in line and '*/' in line):
+            a = line.index('/*')
+            b = line.index('*/')
+            line = (line[:a] + line[b+2:]).strip() #line = everything before /* + everything after */
+            if not line: continue
+        if('//' in line):
+            line = line[:line.index('//')].strip() #line = everything before //
+            if not line: continue
         if("/*" in line):comment = True;continue
         if("*/" in line):comment = False;continue
         if(".data" in line):data = True;code = False;bss = False;continue
